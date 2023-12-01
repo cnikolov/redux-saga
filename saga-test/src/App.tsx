@@ -4,7 +4,7 @@ import { store, actions, selectTodos } from "./lib/store";
 function TodoApp() {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(actions.todosFetchRequested());
+    dispatch(actions.fetchTodos());
   }, []);
   const todos = useSelector(selectTodos);
 
@@ -15,6 +15,7 @@ function TodoApp() {
           <React.Fragment key={todo.id}>
             <div>
               <input
+                onChange={() => dispatch(actions.toggleTodo(todo))}
                 id={todo.id.toString()}
                 type="checkbox"
                 checked={todo.done}
