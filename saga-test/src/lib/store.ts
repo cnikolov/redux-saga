@@ -1,7 +1,7 @@
 import { legacy_createStore as createStore, applyMiddleware } from "redux";
 import { put, takeEvery, call } from "redux-saga/effects";
 import createSagaMiddleware from "redux-saga";
-import { Todo, deleteTodo, getTodos, updateTodo } from "./api";
+import { Todo, createTodo, deleteTodo, getTodos, updateTodo } from "./api";
 const enum EActionType {
   TODOS_FETCH_REQUESTED = "TODOS_FETCH_REQUESTED",
   TODOS_FETCH_SUCCEEDED = "TODOS_FETCH_SUCCEEDED",
@@ -9,6 +9,8 @@ const enum EActionType {
   TODOS_UPDATE_SUCCEEDED = "TODOS_UPDATE_SUCCEEDED",
   TODOS_DELETE_REQUESTED = "TODOS_DELETE_REQUESTED",
   TODOS_DELETE_SUCCEEDED = "TODOS_DELETE_SUCCEEDED",
+  TODOS_CREATE_REQUESTED = "TODOS_CREATE_REQUESTED",
+  TODOS_CREATE_SUCCEEDED = "TODOS_CREATE_SUCCEEDED",
 }
 export const actions = {
   fetchTodos: () => ({ type: EActionType.TODOS_FETCH_REQUESTED }),
@@ -26,6 +28,10 @@ export const actions = {
   deleteTodo: (id: number) => ({
     type: EActionType.TODOS_DELETE_REQUESTED,
     payload: id,
+  }),
+  createTodo: (title: string) => ({
+    type: EActionType.TODOS_CREATE_REQUESTED,
+    payload: title,
   }),
 };
 
@@ -47,11 +53,18 @@ function* deleteTodoAction(action: {
   const todo: Todo = yield call(deleteTodo, action.payload);
   yield put({ type: EActionType.TODOS_DELETE_SUCCEEDED, payload: todo });
 }
-
+function* createTodoAction(action: {
+  type: EActionType.TODOS_CREATE_REQUESTED;
+  payload: string;
+}) {
+  const todo: Todo = yield call(createTodo, action.payload);
+  yield put({ type: EActionType.TODOS_CREATE_SUCCEEDED, payload: todo });
+}
 function* rootSaga() {
   yield takeEvery(EActionType.TODOS_FETCH_REQUESTED, getTodosAction);
   yield takeEvery(EActionType.TODOS_UPDATE_REQUESTED, updateTodoAction);
   yield takeEvery(EActionType.TODOS_DELETE_REQUESTED, deleteTodoAction);
+  yield takeEvery(EActionType.TODOS_CREATE_REQUESTED, createTodoAction);
 }
 const reducer = (
   state: Todo[] = [],
@@ -60,13 +73,17 @@ const reducer = (
   switch (action.type) {
     case EActionType.TODOS_FETCH_SUCCEEDED:
       return action.payload;
-    case EActionType.TODOS_UPDATE_REQUESTED: {
+    case EActionType.TODOS_UPDATE_SUCCEEDED: {
       const todo = action.payload as Todo;
       return state.map((t) => (t.id === todo.id ? todo : t));
     }
-    case EActionType.TODOS_DELETE_REQUESTED: {
+    case EActionType.TODOS_DELETE_SUCCEEDED: {
       const id = action.payload as number;
       return state.filter((t) => t.id !== id);
+    }
+    case EActionType.TODOS_CREATE_SUCCEEDED: {
+      const todo = action.payload as Todo;
+      return [...state, todo];
     }
     default:
       return state;

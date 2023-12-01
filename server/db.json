@@ -1,21 +1,18 @@
 {
-    "todos":[
-        {
-            "id":1,
-            "title":"Tailwind CSS",
-            "completed":false,
-            "active":true
-        },
-        {
-            "id":2,
-            "title":"Catalyst UI",
-            "completed":false,
-            "active":true
-        },
-        {
-            "id":3,
-            "title":"AWS Developer Certificate",
-            "completed":false,
-            "active":true
-        }]
+  "todos": [
+    {
+      "id": 1,
+      "title": "Tailwind CSS",
+      "completed": false,
+      "active": true,
+      "done": false
+    },
+    {
+      "id": 2,
+      "title": "Catalyst UI",
+      "completed": false,
+      "active": true,
+      "done": false
+    }
+]
 }

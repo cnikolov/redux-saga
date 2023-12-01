@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { store, actions, selectTodos } from "./lib/store";
 function TodoApp() {
@@ -7,7 +7,14 @@ function TodoApp() {
     dispatch(actions.fetchTodos());
   }, []);
   const todos = useSelector(selectTodos);
-
+  const textRef = useRef<HTMLInputElement>(null);
+  const handleAdd = () => {
+    if (textRef.current) {
+      const text = textRef.current.value;
+      dispatch(actions.createTodo(text));
+      textRef.current.value = "";
+    }
+  };
   return (
     <div className="App">
       <div className="todos">
@@ -29,8 +36,8 @@ function TodoApp() {
         ))}
       </div>
       <div className="add">
-        <input type="text" />
-        <button>Add</button>
+        <input ref={textRef} type="text" />
+        <button onClick={handleAdd}>Add</button>
       </div>
     </div>
   );
