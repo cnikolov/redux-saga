@@ -22,7 +22,9 @@ function TodoApp() {
               />
               <label htmlFor={todo.id.toString()}>{todo.title}</label>
             </div>
-            <button>Delete</button>
+            <button onClick={() => dispatch(actions.deleteTodo(todo.id))}>
+              Delete
+            </button>
           </React.Fragment>
         ))}
       </div>
