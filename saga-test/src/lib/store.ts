@@ -30,3 +30,5 @@ const sagaMiddleware = createSagaMiddleware();
 export const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 
 sagaMiddleware.run(rootSaga);
+
+export const selectTodos = (state: Todo[]) => state;

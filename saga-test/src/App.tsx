@@ -1,21 +1,25 @@
 import React, { useEffect } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import { store, actions } from "./lib/store";
+import { store, actions, selectTodos } from "./lib/store";
 function TodoApp() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(actions.todosFetchRequested());
   }, []);
-  const todos = useSelector((state: any) => state);
+  const todos = useSelector(selectTodos);
 
   return (
     <div className="App">
       <div className="todos">
-        {todos?.map((todo: any) => (
+        {todos?.map((todo) => (
           <React.Fragment key={todo.id}>
             <div>
-              <input id={todo.id} type="checkbox" checked={todo.done} />
-              <label htmlFor={todo.id}>{todo.title}</label>
+              <input
+                id={todo.id.toString()}
+                type="checkbox"
+                checked={todo.done}
+              />
+              <label htmlFor={todo.id.toString()}>{todo.title}</label>
             </div>
             <button>Delete</button>
           </React.Fragment>

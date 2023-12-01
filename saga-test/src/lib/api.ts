@@ -2,7 +2,7 @@ const BASE_URL = "http://localhost:4000/todos";
 
 export interface Todo {
   id: number;
-  text: string;
+  title: string;
   done: boolean;
   active: boolean;
 }
