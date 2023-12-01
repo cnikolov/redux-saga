@@ -1,15 +1,19 @@
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./CounterApp.module.css";
-export const CounterApp = ({
-  value,
-  onIncrement,
-  onDecrement,
-  onIncrementAsync,
-}: {
-  value: number;
-  onIncrement: () => void;
-  onDecrement: () => void;
-  onIncrementAsync: () => void;
-}) => {
+import { incrementSelector } from "./lib/counterStore";
+export const CounterApp = () => {
+  const dispatch = useDispatch();
+  const value = useSelector(incrementSelector);
+  const onIncrement = () => {
+    dispatch({ type: "INCREMENT", payload: 1 });
+  };
+  const onIncrementAsync = () => {
+    dispatch({ type: "INCREMENT_ASYNC" });
+  };
+  const onDecrement = () => {
+    dispatch({ type: "DECREMENT", payload: 1 });
+  };
+
   return (
     <div className={styles.counter}>
       <button onClick={onIncrementAsync}>Increment after 1 second</button>{" "}

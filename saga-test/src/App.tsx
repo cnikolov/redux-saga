@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import { store, actions, selectTodos } from "./lib/store";
+import { store, actions, selectTodos } from "./lib/todoStore";
+import { store as counterStore } from "./lib/counterStore";
 import { CounterApp } from "./CounterApp";
 function TodoApp() {
   const dispatch = useDispatch();
@@ -47,12 +48,9 @@ function App() {
   return (
     <Provider store={store}>
       <TodoApp />
-      <CounterApp
-        value={0}
-        onDecrement={() => {}}
-        onIncrement={() => {}}
-        onIncrementAsync={() => {}}
-      />
+      <Provider store={counterStore}>
+        <CounterApp />
+      </Provider>
     </Provider>
   );
 }
